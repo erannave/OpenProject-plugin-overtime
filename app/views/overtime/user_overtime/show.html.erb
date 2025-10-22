@@ -1,0 +1,137 @@
+<div class="generic-table--container">
+  <div class="generic-table--results-container">
+    <h2><%= t("overtime.my_overtime") %></h2>
+
+    <% if @has_quota %>
+      <div class="toolbar">
+        <div class="toolbar-items">
+          <%= link_to t("overtime.export_csv"),
+                      { action: :export, format: :csv },
+                      class: "button -alt-highlight",
+                      aria: { label: t("overtime.export_csv") } %>
+        </div>
+      </div>
+
+      <div class="attributes-group">
+        <div class="attributes-key-value">
+          <div class="attributes-key-value--key"><%= t("overtime.weekly_quota") %></div>
+          <div class="attributes-key-value--value">
+            <%= number_with_precision(@summary[:weekly_quota], precision: 2) %> <%= t("overtime.hours") %>
+          </div>
+        </div>
+
+        <div class="attributes-key-value">
+          <div class="attributes-key-value--key"><%= t("overtime.start_date") %></div>
+          <div class="attributes-key-value--value">
+            <%= l(@summary[:start_date]) if @summary[:start_date] %>
+          </div>
+        </div>
+
+        <div class="attributes-key-value">
+          <div class="attributes-key-value--key"><%= t("overtime.weeks_tracked") %></div>
+          <div class="attributes-key-value--value">
+            <%= @summary[:weeks_count] %>
+          </div>
+        </div>
+
+        <div class="attributes-key-value">
+          <div class="attributes-key-value--key"><%= t("overtime.average_weekly_hours") %></div>
+          <div class="attributes-key-value--value">
+            <%= number_with_precision(@summary[:average_weekly_hours], precision: 2) %> <%= t("overtime.hours") %>
+          </div>
+        </div>
+
+        <div class="attributes-key-value overtime-total">
+          <div class="attributes-key-value--key"><%= t("overtime.total_overtime") %></div>
+          <div class="attributes-key-value--value <%= @summary[:total_overtime] > 0 ? 'overtime-positive' : 'overtime-negative' %>">
+            <%= number_with_precision(@summary[:total_overtime], precision: 2) %> <%= t("overtime.hours") %>
+          </div>
+        </div>
+      </div>
+
+      <h3><%= t("overtime.weekly_breakdown") %></h3>
+
+      <% if @summary[:weeks_detail].any? %>
+        <table class="generic-table">
+          <thead>
+            <tr>
+              <th><%= t("overtime.week_starting") %></th>
+              <th><%= t("overtime.total_hours") %></th>
+              <th><%= t("overtime.quota") %></th>
+              <th><%= t("overtime.overtime") %></th>
+              <th><%= t("overtime.difference") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @summary[:weeks_detail].sort.reverse.each do |week_start, data| %>
+              <tr>
+                <td><%= l(week_start) %></td>
+                <td><%= number_with_precision(data[:total_hours], precision: 2) %> <%= t("overtime.hours") %></td>
+                <td><%= number_with_precision(data[:quota], precision: 2) %> <%= t("overtime.hours") %></td>
+                <td class="<%= data[:overtime] > 0 ? 'overtime-positive' : 'overtime-negative' %>">
+                  <%= number_with_precision(data[:overtime], precision: 2) %> <%= t("overtime.hours") %>
+                </td>
+                <td>
+                  <% if data[:overtime] > 0 %>
+                    <span class="badge -error">+<%= number_with_precision(data[:overtime], precision: 2) %>h</span>
+                  <% elsif data[:overtime] < 0 %>
+                    <span class="badge -success"><%= number_with_precision(data[:overtime], precision: 2) %>h</span>
+                  <% else %>
+                    <span class="badge">0h</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr class="summary-row">
+              <td><strong><%= t("overtime.total") %></strong></td>
+              <td colspan="2"></td>
+              <td class="<%= @summary[:total_overtime] > 0 ? 'overtime-positive' : 'overtime-negative' %>">
+                <strong><%= number_with_precision(@summary[:total_overtime], precision: 2) %> <%= t("overtime.hours") %></strong>
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      <% else %>
+        <p class="no-results-message">
+          <%= t("overtime.no_time_entries") %>
+        </p>
+      <% end %>
+
+    <% else %>
+      <div class="notification-box -info">
+        <div class="notification-box--content">
+          <p><%= t("overtime.no_quota_configured") %></p>
+          <p><%= t("overtime.contact_admin") %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .overtime-positive {
+    color: #d9534f;
+    font-weight: bold;
+  }
+  .overtime-negative {
+    color: #5cb85c;
+    font-weight: bold;
+  }
+  .overtime-total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #ddd;
+  }
+  .overtime-total .attributes-key-value--key,
+  .overtime-total .attributes-key-value--value {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .summary-row {
+    border-top: 2px solid #333;
+    background-color: #f5f5f5;
+  }
+</style>

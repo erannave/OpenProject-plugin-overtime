@@ -1,0 +1,5 @@
+<div class="generic-table--container">
+  <h2><%= t("overtime.edit_quota") %></h2>
+
+  <%= render partial: "form", locals: { url: { action: :update, id: @quota.id } } %>
+</div>

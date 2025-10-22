@@ -1,0 +1,116 @@
+<div class="generic-table--container">
+  <div class="generic-table--results-container">
+    <h2><%= t("overtime.admin_title") %></h2>
+
+    <p><%= t("overtime.admin_description") %></p>
+
+    <div class="toolbar">
+      <div class="toolbar-items">
+        <%= link_to t("overtime.new_quota"),
+                    { action: :new },
+                    class: "button -alt-highlight",
+                    aria: { label: t("overtime.new_quota") } %>
+      </div>
+    </div>
+
+    <% if @overtime_data.any? %>
+      <table class="generic-table">
+        <thead>
+          <tr>
+            <th><%= t("overtime.user") %></th>
+            <th><%= t("overtime.weekly_quota") %></th>
+            <th><%= t("overtime.start_date") %></th>
+            <th><%= t("overtime.total_overtime") %></th>
+            <th><%= t("overtime.weeks_tracked") %></th>
+            <th><%= t("overtime.average_weekly_hours") %></th>
+            <th><%= t("overtime.status") %></th>
+            <th class="buttons"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @overtime_data.each do |data| %>
+            <% user = data[:user] %>
+            <% quota = data[:quota] %>
+            <% summary = data[:summary] %>
+            <tr>
+              <td><%= link_to user.name, edit_user_path(user) %></td>
+              <td><%= number_with_precision(summary[:weekly_quota], precision: 2) %> <%= t("overtime.hours") %></td>
+              <td><%= l(summary[:start_date]) if summary[:start_date] %></td>
+              <td class="<%= summary[:total_overtime] > 0 ? 'overtime-positive' : 'overtime-negative' %>">
+                <%= number_with_precision(summary[:total_overtime], precision: 2) %> <%= t("overtime.hours") %>
+              </td>
+              <td><%= summary[:weeks_count] %></td>
+              <td><%= number_with_precision(summary[:average_weekly_hours], precision: 2) %> <%= t("overtime.hours") %></td>
+              <td>
+                <% if quota&.active %>
+                  <span class="badge -success"><%= t("overtime.active") %></span>
+                <% else %>
+                  <span class="badge"><%= t("overtime.inactive") %></span>
+                <% end %>
+              </td>
+              <td class="buttons">
+                <% if quota %>
+                  <%= link_to t("button_edit"),
+                              { action: :edit, id: quota.id },
+                              class: "button -alt-highlight" %>
+                  <%= link_to t("button_delete"),
+                              { action: :destroy, id: quota.id },
+                              method: :delete,
+                              data: { confirm: t("overtime.confirm_delete") },
+                              class: "button" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="no-results-message">
+        <%= t("overtime.no_quotas_configured") %>
+      </p>
+    <% end %>
+
+    <h3><%= t("overtime.all_users") %></h3>
+    <table class="generic-table">
+      <thead>
+        <tr>
+          <th><%= t("overtime.user") %></th>
+          <th><%= t("overtime.has_quota") %></th>
+          <th class="buttons"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= link_to user.name, edit_user_path(user) %></td>
+            <td>
+              <% if @quotas[user.id] %>
+                <span class="badge -success"><%= t("label_yes") %></span>
+              <% else %>
+                <span class="badge"><%= t("label_no") %></span>
+              <% end %>
+            </td>
+            <td class="buttons">
+              <% unless @quotas[user.id] %>
+                <%= link_to t("overtime.set_quota"),
+                            { action: :new, user_id: user.id },
+                            class: "button -alt-highlight" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .overtime-positive {
+    color: #d9534f;
+    font-weight: bold;
+  }
+  .overtime-negative {
+    color: #5cb85c;
+    font-weight: bold;
+  }
+</style>

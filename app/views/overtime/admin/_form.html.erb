@@ -1,0 +1,79 @@
+<%= form_for @quota, url: url, html: { class: "form" } do |f| %>
+  <% if @quota.errors.any? %>
+    <div class="errorExplanation" id="errorExplanation">
+      <h3><%= l(:label_error_plural, count: @quota.errors.count) %></h3>
+      <ul>
+        <% @quota.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <section class="form--section">
+    <div class="form--field">
+      <%= f.label :user_id, t("overtime.user"), class: "form--label" %>
+      <div class="form--field-container">
+        <% if @user %>
+          <%= f.hidden_field :user_id %>
+          <div class="form--text-field-container">
+            <input type="text" value="<%= @user.name %>" disabled class="form--text-field">
+          </div>
+        <% else %>
+          <div class="form--select-container">
+            <%= f.collection_select :user_id,
+                                    User.active.order(:lastname, :firstname),
+                                    :id,
+                                    :name,
+                                    { include_blank: t("overtime.select_user") },
+                                    { class: "form--select" } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :weekly_hours_quota, t("overtime.weekly_quota"), class: "form--label" %>
+      <div class="form--field-container">
+        <div class="form--text-field-container">
+          <%= f.number_field :weekly_hours_quota,
+                             step: 0.25,
+                             min: 0,
+                             class: "form--text-field",
+                             required: true %>
+        </div>
+        <div class="form--field-instructions">
+          <%= t("overtime.weekly_quota_help") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form--field">
+      <%= f.label :start_date, t("overtime.start_date"), class: "form--label" %>
+      <div class="form--field-container">
+        <div class="form--text-field-container">
+          <%= f.date_field :start_date,
+                           class: "form--text-field",
+                           required: true %>
+        </div>
+        <div class="form--field-instructions">
+          <%= t("overtime.start_date_help") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form--field">
+      <div class="form--field-container">
+        <div class="form--check-box-container">
+          <%= f.check_box :active, class: "form--check-box" %>
+          <%= f.label :active, t("overtime.active"), class: "form--label-with-check-box" %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="form--toolbar">
+    <%= f.submit t("button_save"), class: "button -highlight -with-icon icon-checkmark" %>
+    <%= link_to t("button_cancel"), { action: :index }, class: "button" %>
+  </div>
+<% end %>
