@@ -1,0 +1,56 @@
+en:
+  overtime:
+    # Menu labels
+    admin_menu_label: "Overtime Settings"
+    user_menu_label: "My Overtime"
+
+    # Admin page
+    admin_title: "Overtime Management"
+    admin_description: "Configure weekly quotas and track overtime for users"
+    new_quota: "New Quota"
+    edit_quota: "Edit Quota"
+    all_users: "All Users"
+    no_quotas_configured: "No overtime quotas configured yet."
+
+    # User page
+    my_overtime: "My Overtime"
+    no_quota_configured: "No overtime quota has been configured for your account."
+    contact_admin: "Please contact your administrator to set up overtime tracking."
+    no_time_entries: "No time entries found for the configured period."
+    export_csv: "Export to CSV"
+
+    # Table headers
+    user: "User"
+    weekly_quota: "Weekly Quota"
+    start_date: "Start Date"
+    total_overtime: "Total Overtime"
+    weeks_tracked: "Weeks Tracked"
+    average_weekly_hours: "Average Weekly Hours"
+    status: "Status"
+    has_quota: "Has Quota"
+    week_starting: "Week Starting"
+    total_hours: "Total Hours"
+    quota: "Quota"
+    overtime: "Overtime"
+    difference: "Difference"
+    total: "Total"
+
+    # Form labels
+    select_user: "-- Select a user --"
+    weekly_quota_help: "Enter the expected weekly working hours (e.g., 40 for a full-time employee)"
+    start_date_help: "Overtime calculation will start from this date"
+    active: "Active"
+    inactive: "Inactive"
+    set_quota: "Set Quota"
+
+    # Units
+    hours: "hours"
+
+    # Messages
+    quota_created: "Overtime quota has been created successfully."
+    quota_updated: "Overtime quota has been updated successfully."
+    quota_deleted: "Overtime quota has been deleted successfully."
+    confirm_delete: "Are you sure you want to delete this overtime quota?"
+
+    # Breakdown
+    weekly_breakdown: "Weekly Breakdown"

@@ -1,0 +1,56 @@
+de:
+  overtime:
+    # Menu labels
+    admin_menu_label: "Überstunden-Einstellungen"
+    user_menu_label: "Meine Überstunden"
+
+    # Admin page
+    admin_title: "Überstunden-Verwaltung"
+    admin_description: "Konfigurieren Sie wöchentliche Kontingente und verfolgen Sie Überstunden für Benutzer"
+    new_quota: "Neues Kontingent"
+    edit_quota: "Kontingent bearbeiten"
+    all_users: "Alle Benutzer"
+    no_quotas_configured: "Noch keine Überstundenkontingente konfiguriert."
+
+    # User page
+    my_overtime: "Meine Überstunden"
+    no_quota_configured: "Für Ihr Konto wurde kein Überstundenkontingent konfiguriert."
+    contact_admin: "Bitte wenden Sie sich an Ihren Administrator, um die Überstundenverfolgung einzurichten."
+    no_time_entries: "Keine Zeiteinträge für den konfigurierten Zeitraum gefunden."
+    export_csv: "Als CSV exportieren"
+
+    # Table headers
+    user: "Benutzer"
+    weekly_quota: "Wöchentliches Kontingent"
+    start_date: "Startdatum"
+    total_overtime: "Gesamtüberstunden"
+    weeks_tracked: "Verfolgte Wochen"
+    average_weekly_hours: "Durchschnittliche Wochenstunden"
+    status: "Status"
+    has_quota: "Hat Kontingent"
+    week_starting: "Wochenbeginn"
+    total_hours: "Gesamtstunden"
+    quota: "Kontingent"
+    overtime: "Überstunden"
+    difference: "Differenz"
+    total: "Gesamt"
+
+    # Form labels
+    select_user: "-- Benutzer auswählen --"
+    weekly_quota_help: "Geben Sie die erwarteten wöchentlichen Arbeitsstunden ein (z.B. 40 für einen Vollzeitmitarbeiter)"
+    start_date_help: "Die Überstundenberechnung beginnt ab diesem Datum"
+    active: "Aktiv"
+    inactive: "Inaktiv"
+    set_quota: "Kontingent festlegen"
+
+    # Units
+    hours: "Stunden"
+
+    # Messages
+    quota_created: "Das Überstundenkontingent wurde erfolgreich erstellt."
+    quota_updated: "Das Überstundenkontingent wurde erfolgreich aktualisiert."
+    quota_deleted: "Das Überstundenkontingent wurde erfolgreich gelöscht."
+    confirm_delete: "Sind Sie sicher, dass Sie dieses Überstundenkontingent löschen möchten?"
+
+    # Breakdown
+    weekly_breakdown: "Wöchentliche Aufschlüsselung"
