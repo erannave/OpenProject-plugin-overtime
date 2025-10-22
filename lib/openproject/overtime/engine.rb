@@ -1,4 +1,7 @@
-require "open_project/plugins"
+# Prevent load-order problems in case openproject-plugins is listed after a plugin in the Gemfile
+# or not at all
+require 'active_support/dependencies'
+require 'open_project/plugins'
 
 module OpenProject
   module Overtime
@@ -7,37 +10,33 @@ module OpenProject
 
       include OpenProject::Plugins::ActsAsOpEngine
 
-      register "openproject-overtime",
-               author_url: "https://github.com/openproject",
-               bundled: false,
-               settings: {} do
+      register(
+        'openproject-overtime',
+        author_url: 'https://github.com/openproject/openproject-overtime',
+        bundled: false,
+        requires_openproject: '>= 13.0.0'
+      ) do
         menu :admin_menu,
              :overtime_settings,
-             { controller: "/overtime/admin", action: "index" },
+             { controller: '/overtime/admin', action: 'index' },
              parent: :admin_general,
-             caption: ->(*) { I18n.t("overtime.admin_menu_label") },
-             icon: "icon2 icon-time"
+             caption: ->(*) { I18n.t('overtime.admin_menu_label') },
+             icon: 'icon2 icon-time'
 
         menu :account_menu,
              :overtime,
-             { controller: "/overtime/user_overtime", action: "show" },
-             caption: ->(*) { I18n.t("overtime.user_menu_label") },
+             { controller: '/overtime/user_overtime', action: 'show' },
+             caption: ->(*) { I18n.t('overtime.user_menu_label') },
              if: ->(*) { User.current.logged? },
-             icon: "icon2 icon-time"
-      end
-
-      initializer "overtime.register_hooks" do
-        require "openproject/overtime/hooks"
+             icon: 'icon2 icon-time'
       end
 
       config.before_configuration do |app|
-        app.config.paths["db/migrate"].concat config.paths["db/migrate"].expanded
+        app.config.paths['db/migrate'].concat config.paths['db/migrate'].expanded
       end
 
       config.to_prepare do
-        Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator.rb")).each do |c|
-          require_dependency(c)
-        end
+        ::OpenProject::Overtime::Hooks
       end
     end
   end
